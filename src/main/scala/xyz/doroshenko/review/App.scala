@@ -1,4 +1,4 @@
-package xyz.doroshenko.grossum
+package xyz.doroshenko.review
 
 /**
   * Created by Maksym on 11/27/2016.

@@ -1,4 +1,4 @@
-package xyz.doroshenko.grossum
+package xyz.doroshenko.review
 
 import java.util.logging.{Level, Logger}
 
@@ -27,9 +27,11 @@ object Review {
     }
     val mostActiveUsers = reviews.map(review => (review.ProfileName, 1)).reduceByKey(_ + _).takeOrdered(itemsNumber)(Ordering[Int].reverse.on(x => x._2))
     val mostCommentedItems = reviews.map(review => (review.ProductId, 1)).reduceByKey(_ + _).takeOrdered(itemsNumber)(Ordering[Int].reverse.on(x => x._2))
+    val mostUsedWords = reviews.flatMap(review => review.Text.split("\\W+")).map(word => (word.toLowerCase, 1)).reduceByKey(_ + _).takeOrdered(itemsNumber)(Ordering[Int].reverse.on(x => x._2))
 
     mostActiveUsers.foreach(x => println(s"User - ${x._1} : ${x._2} comments"))
     mostCommentedItems.foreach(x => println(s"Product id - ${x._1} : ${x._2} comments"))
+    mostUsedWords.foreach(x=> println(s"Word - ${x._1} used ${x._2} times") )
   }
 
   private def initSparkContext(master: String, appName: String): SparkContext = {
